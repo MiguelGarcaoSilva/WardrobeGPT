@@ -10,6 +10,8 @@ WardrobeGPT is an AI stylist that helps you get the most out of your wardrobe. J
 - View and manage wardrobe inventory.
 
 ## Future functionalities
+- Automatically suggest tags for the items.
+- Filter items by categories.
 - Personalized outfit suggestions.
 
 ## Project Structure

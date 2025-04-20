@@ -22,12 +22,20 @@ def index():
     global image_urls
     if request.method == 'POST':
         description = request.form.get('description')
+        tags = request.form.get('tags')  # Get tags from the form
         file = request.files.get('photo')
         selected_image = request.form.get('selected_image')
 
+        # Process tags (split by commas and strip whitespace)
+        tags_list = [tag.strip() for tag in tags.split(',')] if tags else []
+
         # Handle image selection
         if selected_image:
-            wardrobe_inventory.append({'description': description, 'filename': selected_image})
+            wardrobe_inventory.append({
+                'description': description,
+                'tags': tags_list,
+                'filename': selected_image
+            })
             image_urls = []  # Clear fetched images after selection
             return redirect(url_for('index'))
 
@@ -37,7 +45,11 @@ def index():
                 # Save the uploaded file
                 filename = file.filename
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                wardrobe_inventory.append({'description': description, 'filename': filename})
+                wardrobe_inventory.append({
+                    'description': description,
+                    'tags': tags_list,
+                    'filename': filename
+                })
             else:
                 # Search for similar items on the web using Google Custom Search API
                 search_url = "https://www.googleapis.com/customsearch/v1"

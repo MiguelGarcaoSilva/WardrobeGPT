@@ -18,6 +18,9 @@
                 <label for="description">Description:</label>
                 <input type="text" id="description" name="description" required>
                 <br><br>
+                <label for="tags">Tags (comma-separated):</label>
+                <input type="text" id="tags" name="tags" placeholder="e.g., shirt, casual, blue">
+                <br><br>
                 <label for="photo">Upload a photo (optional):</label>
                 <input type="file" id="photo" name="photo" accept="image/*">
                 <br><br>
@@ -31,6 +34,7 @@
                 <h2>Select the Most Similar Image</h2>
                 <form action="/" method="POST">
                     <input type="hidden" name="description" value="{{ request.form.get('description') }}">
+                    <input type="hidden" name="tags" value="{{ request.form.get('tags') }}">
                     <div class="image-grid">
                         {% for url in image_urls %}
                             <div class="image-item">
@@ -52,7 +56,8 @@
             <div class="inventory-grid">
                 {% for item in inventory %}
                     <div class="inventory-item">
-                        <p>{{ item.description }}</p>
+                        <p><strong>Description:</strong> {{ item.description }}</p>
+                        <p><strong>Tags:</strong> {{ item.tags | join(', ') }}</p>
                         <img src="{{ item.filename }}" alt="{{ item.description }}">
                     </div>
                 {% endfor %}
@@ -61,3 +66,4 @@
     </main>
 </body>
 </html>
+
