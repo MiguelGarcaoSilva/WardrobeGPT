@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wardrobe Inventory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Wardrobe Inventory</h1>
+    </header>
+    <main>
+        <!-- Upload Form -->
+        <section class="form-section">
+            <h2>Add an Item</h2>
+            <form action="/" method="POST" enctype="multipart/form-data">
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
+                <br><br>
+                <label for="photo">Upload a photo (optional):</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+                <br><br>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <!-- Image Selection -->
+        {% if image_urls %}
+            <section class="image-selection">
+                <h2>Select the Most Similar Image</h2>
+                <form action="/" method="POST">
+                    <input type="hidden" name="description" value="{{ request.form.get('description') }}">
+                    <div class="image-grid">
+                        {% for url in image_urls %}
+                            <div class="image-item">
+                                <input type="radio" id="image{{ loop.index }}" name="selected_image" value="{{ url }}" required>
+                                <label for="image{{ loop.index }}">
+                                    <img src="{{ url }}" alt="Image {{ loop.index }}">
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </section>
+        {% endif %}
+
+        <!-- Wardrobe Inventory -->
+        <section class="inventory">
+            <h2>Your Wardrobe Inventory</h2>
+            <div class="inventory-grid">
+                {% for item in inventory %}
+                    <div class="inventory-item">
+                        <p>{{ item.description }}</p>
+                        <img src="{{ item.filename }}" alt="{{ item.description }}">
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>
